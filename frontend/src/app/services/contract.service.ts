@@ -6,9 +6,8 @@ import detectEthereumProvider from '@metamask/detect-provider'
 //@ts-ignore
 import Web3 from 'web3';
 //@ts-ignore
-import Diet from 'src/blockChain/src/abis/Diet.json'
+import Diet from '/src/blockChain/src/abis/Migrations.json'
 import {Router} from "@angular/router";
-import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -71,111 +70,6 @@ export class ContractService {
     } else {
       throw "something is wrong with your contract abi"
     }
-  }
-
-  async participate(currentWeight: number, targetWeight: number, value: number) {
-    /* const amountToSend = this.web3.utils.toWei(value, "ether");*/
-    await this.contract
-      .methods
-      .participate(currentWeight, targetWeight)
-      .send({
-        from: this.accounts[0], value: Web3.utils.toWei(value.toString(), 'ether')
-      })
-      .then((recipe: any) => {
-        console.log(recipe);
-      });
-  }
-
-  async isParticipate() {
-    return await this.contract.methods.participating().call({
-      from: this.accounts[0]
-    })
-  }
-
-  async isManager() {
-    return (await this.contract
-      .methods
-      .ismanager()
-      .call({
-        from: this.accounts[0]
-      }))
-  }
-
-  async changeMinValue(newValue: number) {
-    await this.contract
-      .methods
-      .setMinParticipatingValue(newValue)
-      .send({from: this.accounts[0]})
-      .then((recipe: any) => {
-        console.log(recipe);
-      });
-  }
-
-  async addNfts(URI: string) {
-    await this.contract
-      .methods
-      .addNftsToReward(URI)
-      .send({from: this.accounts[0]})
-      .then((recipe: any) => {
-        console.log(recipe);
-      });
-  }
-
-  async addNewWeight(addNewWeight: number) {
-    await this.contract
-      .methods
-      .updateWeight(addNewWeight)
-      .send({from: this.accounts[0]})
-      .then((recipe: any) => {
-        console.log(recipe);
-      });
-  }
-
-  async addNewWeightTarget(addNewWeightTarget: number) {
-    await this.contract
-      .methods
-      .setTargetWeight(addNewWeightTarget)
-      .send({from: this.accounts[0]})
-      .then((recipe: any) => {
-        console.log(recipe);
-      });
-  }
-
-  async rewardMe() {
-    await this.contract
-      .methods
-      .rewardMe()
-      .send({from: this.accounts[0]})
-  }
-
-  async getProgress() {
-    return await this.contract
-      .methods
-      .getProgress()
-      .call({
-        from: this.accounts[0]
-      })
-  }
-
-  async getNfts() {
-    return await this.contract
-      .methods
-      .getOwnedURIs()
-      .call({
-        from: this.accounts[0]
-      })
-  }
-
-  fetchjsonURI(jsonUrl: string): Observable<{
-    "name": string,
-    "description": string,
-    "image": string
-  }> {
-    return this.httpClient.get<{
-      "name": string,
-      "description": string,
-      "image": string
-    }>(jsonUrl);
   }
 
 }
