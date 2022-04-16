@@ -1739,6 +1739,11 @@
     "yargs" "^17.4.0"
     "yargs-parser" "21.0.1"
 
+"@openzeppelin/contracts@^4.5.0":
+  "integrity" "sha512-fdkzKPYMjrRiPK6K4y64e6GzULR7R7RwxSigHS8DDp7aWDeoReqsQI+cxHV1UuhAqX69L1lAaWDxenfP+xiqzA=="
+  "resolved" "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-4.5.0.tgz"
+  "version" "4.5.0"
+
 "@parcel/watcher@2.0.4":
   "integrity" "sha512-cTDi+FUDBIUOBKEtj+nhiJ71AZVlkAsQFuGQTun5tV9mwQBQgZvhCzG+URPQc8myeN32yRVZEfVAPCs1RW+Jvg=="
   "resolved" "https://registry.npmjs.org/@parcel/watcher/-/watcher-2.0.4.tgz"
