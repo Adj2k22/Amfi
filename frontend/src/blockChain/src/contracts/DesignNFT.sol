@@ -28,8 +28,7 @@ contract DesignNFT is ERC721Enumerable {
     _tokenIds.increment();
 
     uint256 newItemId = _tokenIds.current();
-    _mint(owner, newItemId);
-    _setTokenURI(newItemId, tokenURI);
+    _mintSafeMain(owner, newItemId,tokenURI);
     //adding partners
     address[] memory lDesignersincOwner = new address[](lDesigners.length+1);
     lDesignersincOwner[0] = owner;
