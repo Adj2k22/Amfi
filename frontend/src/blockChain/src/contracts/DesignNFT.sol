@@ -18,7 +18,6 @@ contract DesignNFT is ERC721Enumerable {
   */
   mapping(uint256 => mapping(address => bool)) private transferNftAgreement;
   // register if the owners are registered to the token id to verify the agreement
-  // not needed anymore! it can be replaced by viewing desing struct, all info of designers are stored there.
   mapping(uint256 => mapping(address => bool)) private ownersExist;
 
   constructor() ERC721Enumerable("Design", "AMFI") {}
