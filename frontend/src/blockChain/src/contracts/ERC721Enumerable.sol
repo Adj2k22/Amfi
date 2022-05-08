@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 
@@ -70,6 +70,19 @@ contract ERC721Enumerable is IERC721Enumerable, ERC721URIStorage {
   // return the total supply of the _allTokens array
   function totalSupply() public override view returns (uint256) {
     return _allTokens.length;
+  }
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId
+  ) public virtual  override(ERC721,IERC721)  {
+    super.safeTransferFrom(from, to,tokenId);
+    for(uint i=0;i<_ownedTokens[from].length;i++){
+      if(tokenId == _ownedTokens[from][i]){
+        _ownedTokens[from][i] = 0;
+      }
+    }
+    _ownedTokens[to].push(tokenId);
   }
 
   // get all NFTS ID's of the owner
