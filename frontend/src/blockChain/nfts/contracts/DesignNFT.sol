@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "./IdGenerator.sol";
 import './ERC721Enumerable.sol';
-import '../structs/design.sol';
+import './structs/design.sol';
 
 contract DesignNFT is ERC721Enumerable {
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIds;
+
   // clothing proporties
   // journey of token id. the key id the token id and value is the array indicates changes happend to the id. the last one is the most current
   mapping(uint => Design[]) private infoDesignByToken;
@@ -22,13 +21,11 @@ contract DesignNFT is ERC721Enumerable {
 
   constructor() ERC721Enumerable("Design", "AMFI") {}
 
-  function makeNFT(address owner, string calldata name, address[] calldata lDesigners, string calldata tokenURI)
+  function makeNFT(address owner, address IdGeneratorAddress, string calldata name, address[] calldata lDesigners, string calldata tokenURI)
   public
   returns (uint256)
   {
-    _tokenIds.increment();
-
-    uint256 newItemId = _tokenIds.current();
+    uint256 newItemId = IdGenerator(IdGeneratorAddress).giveMeId();
     _mintSafeMain(owner, newItemId, tokenURI);
     //adding partners
     address[] memory lDesignersincOwner = new address[](lDesigners.length + 1);
@@ -77,7 +74,7 @@ contract DesignNFT is ERC721Enumerable {
     return infoDesignByToken[tokenId][indexOfcurrentUser];
   }
   //transfer token
-  function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721) {
+  function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721, ERC721) {
     super.safeTransferFrom(from, to,tokenId,'0x00000000000000000000000000000000');
   }
 }

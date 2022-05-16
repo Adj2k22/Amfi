@@ -1,0 +1,24 @@
+{
+  "name": "compsible",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "artifacts": "^0.0.1",
+    "ganache-cli": "^6.12.2",
+    "truffle-contract": "^4.0.31",
+    "truffle-plugin-debugger": "^0.0.2",
+    "web3": "^1.7.3",
+    "web3-eth-abi": "^1.7.3",
+    "web3-utils": "^1.7.3"
+  }
+}
