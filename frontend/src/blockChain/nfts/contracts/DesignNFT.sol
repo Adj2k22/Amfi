@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./IdGenerator.sol";
 import './ERC721Enumerable.sol';
 import './structs/design.sol';
 
@@ -25,7 +24,11 @@ contract DesignNFT is ERC721Enumerable {
   public
   returns (uint256)
   {
-    uint256 newItemId = IdGenerator(IdGeneratorAddress).giveMeId();
+    // making call to id generator to get id for the token
+    (bool success, bytes memory returnData) = address(IdGeneratorAddress).call(abi.encodeWithSignature("giveMeId()"));
+    require(success, "Error: getting ID token faild");
+    uint256 newItemId = uint256(bytes32(returnData));
+
     _mintSafeMain(owner, newItemId, tokenURI);
     //adding partners
     address[] memory lDesignersincOwner = new address[](lDesigners.length + 1);

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./IdGenerator.sol";
 import './ERC721Enumerable.sol';
 import './structs/material.sol';
 
@@ -17,8 +16,11 @@ contract MaterialNFT is ERC721Enumerable {
   public
   returns (uint256)
   {require(amount>0,"Error your material needs to have weight ");
+    // making call to id generator to get id for the token
+    (bool success, bytes memory returnData) = address(IdGeneratorAddress).call(abi.encodeWithSignature("giveMeId()"));
+    require(success, "Error: getting ID token faild");
+    uint256 newItemId = uint256(bytes32(returnData));
 
-    uint256 newItemId = IdGenerator(IdGeneratorAddress).giveMeId();
     _mintSafeMain(owner, newItemId, tokenURI);
     Material memory material = Material(owner, materialType, amount, tokenURI, newItemId);
     infoMaterialByToken[newItemId].push(material);
