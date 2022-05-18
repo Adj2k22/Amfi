@@ -72,13 +72,11 @@ contract ComposableTopDown is ERC721c, ERC998ERC721TopDown, ERC998ERC721TopDownE
     //constructor(string _name, string _symbol) public ERC721Token(_name, _symbol) {}
 
     // wrapper on minting new 721
-    function mint(address _to) public returns (uint256) {
-        tokenCount++;
-        uint256 tokenCount_ = tokenCount;
-        tokenIdToTokenOwner[tokenCount_] = _to;
-        tokenOwnerToTokenCount[_to]++;
-        return tokenCount_;
-    }
+  function mint(address _to, uint256 tokenId) public returns (uint256) {
+    tokenIdToTokenOwner[tokenId] = _to;
+    tokenOwnerToTokenCount[_to]++;
+    return tokenId;
+  }
     //from zepellin ERC721Receiver.sol
     //old version
     bytes4 constant ERC721_RECEIVED_OLD = 0xf0b9e5ba;
