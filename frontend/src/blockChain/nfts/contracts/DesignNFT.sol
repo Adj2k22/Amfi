@@ -3,9 +3,13 @@ pragma solidity ^0.8.0;
 
 import './ERC721Enumerable.sol';
 import './structs/design.sol';
+import './enums/nftTypes.sol';
 
 contract DesignNFT is ERC721Enumerable {
-
+  NftType private nftType = NftType.BRAND;
+  function getNftType()public view returns(NftType){
+    return nftType;
+  }
   // clothing proporties
   // journey of token id. the key id the token id and value is the array indicates changes happend to the id. the last one is the most current
   mapping(uint => Design[]) private infoDesignByToken;
@@ -20,7 +24,7 @@ contract DesignNFT is ERC721Enumerable {
 
   constructor() ERC721Enumerable("Design", "AMFI") {}
 
-  function makeNFT(address owner, address IdGeneratorAddress, string calldata name, address[] calldata lDesigners, string calldata tokenURI)
+  function makeNFT(address owner, address IdGeneratorAddress, string calldata designType, address[] calldata lDesigners, string calldata tokenURI)
   public
   returns (uint256)
   {
@@ -44,7 +48,7 @@ contract DesignNFT is ERC721Enumerable {
         lDesignersincOwner[i] = lDesigners[i - 1];
       }
     }
-    Design memory design = Design(name, lDesigners, tokenURI, newItemId);
+    Design memory design = Design(designType, lDesigners, tokenURI, newItemId);
     infoDesignByToken[newItemId].push(design);
     // register owners to the token id
     for (uint i = 0; i < lDesigners.length; i++) {
@@ -80,4 +84,5 @@ contract DesignNFT is ERC721Enumerable {
   function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721, ERC721) {
     super.safeTransferFrom(from, to,tokenId,'0x00000000000000000000000000000000');
   }
+
 }
