@@ -72,7 +72,7 @@ contract ComposableTopDown is ERC721c, ERC998ERC721TopDown, ERC998ERC721TopDownE
     //constructor(string _name, string _symbol) public ERC721Token(_name, _symbol) {}
 
     // wrapper on minting new 721
-  function mint(address _to, uint256 tokenId) public returns (uint256) {
+  function mint(address _to, uint256 tokenId) internal returns (uint256) {
     tokenIdToTokenOwner[tokenId] = _to;
     tokenOwnerToTokenCount[_to]++;
     return tokenId;
