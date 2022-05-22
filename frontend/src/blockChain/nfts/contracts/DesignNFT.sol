@@ -6,8 +6,9 @@ import './structs/design.sol';
 import './enums/nftTypes.sol';
 
 contract DesignNFT is ERC721Enumerable {
-  NftType private nftType = NftType.BRAND;
-  function getNftType()public view returns(NftType){
+  NftType private constant nftType = NftType.BRAND;
+
+  function getNftType() public view returns (NftType){
     return nftType;
   }
   // clothing proporties
@@ -57,10 +58,10 @@ contract DesignNFT is ERC721Enumerable {
     return newItemId;
   }
   //Get all Nfts of the user
-  function getOwnedURIs(address owner) public view returns(string[] memory){
+  function getOwnedURIs(address owner) public view returns (string[] memory){
     uint256[] memory nftsIds = _ownedTokensIds(owner);
-    string[] memory nfts = new string[]( nftsIds.length);
-    for(uint256 i = 0; i< nftsIds.length; i++){
+    string[] memory nfts = new string[](nftsIds.length);
+    for (uint256 i = 0; i < nftsIds.length; i++) {
       nfts[i] = tokenURI(nftsIds[i]);
     }
     return nfts;
@@ -72,17 +73,13 @@ contract DesignNFT is ERC721Enumerable {
     transferNftAgreement[tokenId][partner] = true;
   }
   //get history
-  function getHistory(uint tokenId)public view returns( Design[] memory){
+  function getHistory(uint tokenId) public view returns (Design[] memory){
     return infoDesignByToken[tokenId];
   }
   // get current
-  function getCurrent(uint tokenId)public view returns( Design memory){
-    uint indexOfcurrentUser = infoDesignByToken[tokenId].length -1;
+  function getCurrent(uint tokenId) public view returns (Design memory){
+    uint indexOfcurrentUser = infoDesignByToken[tokenId].length - 1;
     return infoDesignByToken[tokenId][indexOfcurrentUser];
-  }
-  //transfer token
-  function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721, ERC721) {
-    super.safeTransferFrom(from, to,tokenId,'0x00000000000000000000000000000000');
   }
 
 }
