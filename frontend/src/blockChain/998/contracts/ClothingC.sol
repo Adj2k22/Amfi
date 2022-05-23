@@ -1,20 +1,28 @@
 pragma solidity ^0.4.24;
-
+pragma experimental ABIEncoderV2;
 import "./ComposableTopDown.sol";
 
 contract ClothingC is ComposableTopDown {
-
+  //enums
+  enum TokenIdAction {Created, Moved, Composed}
+  enum NftType {CLOTHING, MATERIAL, BRAND}
+  //structs
+  struct Transaction {
+    uint256 timeStamp;
+    address from;
+    address to;
+    NftType nftType;
+    TokenIdAction tokenIdAction;
+  }
 
   NftType private constant nftType = NftType.CLOTHING;
 
 
-  mapping(uint256 => Transaction[])private tokenIdTransactions;
-  mapping(uint256 => uint256[])private clothingToMaterials;
-  mapping(uint256 => uint256)private materialToClothing;
-  uint256[] private  clothingTokens;
+  mapping(uint256 => Transaction[])internal tokenIdTransactions;
+  mapping(uint256 => uint256)internal parentChildsLen;
+  mapping(uint256 => uint256)internal childToParent;
+  uint256[] internal  clothingTokens;
 
-
-  uint256 public test;
 
   function mint(address _to, uint256 tokenId, address IdGenerator) public returns (uint256) {
     address tokenIdContract = getContractTokenId(IdGenerator, tokenId);
@@ -27,23 +35,26 @@ contract ClothingC is ComposableTopDown {
     require(tokenId <= id, "Error: invalid tokenId");
     NftType tokenType = NftType(getNftTypeOfTokenId(IdGenerator, tokenId));
 
-    if (tokenType == NftType.DESIGN) {
+    if (tokenType == NftType.BRAND) {
       clothingTokens.push(tokenId);
     }
     tokenIdTransactions[tokenId].push(Transaction(now, msg.sender, address(this), tokenType, TokenIdAction.Created));
 
-    // get nft type and push to mapping!!
+
     return mintiedToken;
   }
 
-  enum TokenIdAction {Created, Moved, Composed}
-  enum NftType {CLOTHING, MATERIAL, DESIGN}
-  struct Transaction {
-    uint256 timeStamp;
-    address from;
-    address to;
-    NftType nftType;
-    TokenIdAction tokenIdAction;
+  function safeTransferChildMain(address idGenerator, uint256 _fromTokenId, address _to, address _childContract, uint256 _childTokenId, bytes _data) external{
+    uint256 toParentTokenID =  uint256(bytes32(convertBytesToBytes8(_data)));
+    NftType parentTokenType = NftType(getNftTypeOfTokenId(idGenerator, toParentTokenID));
+    NftType childTokenType = NftType(getNftTypeOfTokenId(idGenerator, _childTokenId));
+    require(childTokenType == parentTokenType && parentTokenType == NftType.BRAND, "you cant add design to design");
+
+    parentChildsLen[toParentTokenID]++;
+    childToParent[_childTokenId] = toParentTokenID;
+    tokenIdTransactions[toParentTokenID].push(Transaction(now, msg.sender, address(this), parentTokenType, TokenIdAction.Composed));
+    tokenIdTransactions[_childTokenId].push(Transaction(now, msg.sender, address(this), childTokenType, TokenIdAction.Composed));
+    safeTransferChild(_fromTokenId,_to,_childContract,_childTokenId,_data);
   }
 
   function getCurrentIDFromGenerator(address idGenerator) public returns (int value) {
@@ -149,5 +160,30 @@ contract ClothingC is ComposableTopDown {
       mstore(0x40, add(o, 0x44)) // Set storage pointer to empty space
     }
   }
+  function convertBytesToBytes8(bytes inBytes) internal pure returns (bytes8 outBytes8) {
+    if (inBytes.length == 0) {
+      return 0x0;
+    }
 
+    assembly {
+      outBytes8 := mload(add(inBytes, 32))
+    }
+  }
+  // get transactions
+  function getTransactionOfTokenId(uint256 tokenId) external view returns(Transaction[] calldata) {
+    return tokenIdTransactions[tokenId];
+  }
+  // get parent of child
+  function getparentTokenIdOfchild(uint256 tokenId) external view returns(uint256) {
+    return childToParent[tokenId];
+  }
+  // get childeren of parent
+  function getChildTokenIdsOfParent(uint256 tokenId, address IdGenerator) external view returns(uint256[] calldata) {
+    uint256[] memory childs = new uint256[](parentChildsLen[tokenId]);
+    address tokenIdContract = getContractTokenId(IdGenerator, tokenId);
+    for (uint i = 0; i<childs.length;i++){
+      childs[i] = childTokenByIndex(tokenId,tokenIdContract,i);
+    }
+    return childs;
+  }
 }
