@@ -18,5 +18,9 @@
     "truffle-plugin-debugger": "^0.0.2",
     "web3-eth-abi": "^1.7.3",
     "web3-utils": "^1.7.3"
+  },
+  "devDependencies": {
+    "prettier": "^2.6.2",
+    "prettier-plugin-solidity": "^1.0.0-beta.19"
   }
 }
