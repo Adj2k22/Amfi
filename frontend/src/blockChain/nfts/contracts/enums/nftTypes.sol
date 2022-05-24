@@ -1,2 +1,2 @@
 pragma solidity ^0.8.0;
-  enum NftType {CLOTHING,MATERIAL,DESIGN}
+  enum NftType {NOTEXIST,CLOTHING,MATERIAL,BRAND}
