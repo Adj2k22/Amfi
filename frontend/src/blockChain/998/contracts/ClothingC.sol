@@ -5,7 +5,7 @@ import "./ComposableTopDown.sol";
 contract ClothingC is ComposableTopDown {
   //enums
   enum TokenIdAction {Created, Moved, Composed}
-  enum NftType {CLOTHING, MATERIAL, BRAND}
+  enum NftType {NOTEXIST,CLOTHING, MATERIAL, BRAND}
   //structs
   struct Transaction {
     uint256 timeStamp;
@@ -45,10 +45,10 @@ contract ClothingC is ComposableTopDown {
   }
 
   function safeTransferChildMain(address idGenerator, uint256 _fromTokenId, address _to, address _childContract, uint256 _childTokenId, bytes _data) external{
-    uint256 toParentTokenID =  uint256(bytes32(convertBytesToBytes8(_data)));
+    uint256 toParentTokenID =  bytesToUint(_data);
     NftType parentTokenType = NftType(getNftTypeOfTokenId(idGenerator, toParentTokenID));
     NftType childTokenType = NftType(getNftTypeOfTokenId(idGenerator, _childTokenId));
-    require(childTokenType == parentTokenType && parentTokenType == NftType.BRAND, "you cant add design to design");
+    //require(childTokenType != parentTokenType && parentTokenType != NftType.BRAND, "you cant add design to design");
 
     parentChildsLen[toParentTokenID]++;
     childToParent[_childTokenId] = toParentTokenID;
@@ -160,15 +160,15 @@ contract ClothingC is ComposableTopDown {
       mstore(0x40, add(o, 0x44)) // Set storage pointer to empty space
     }
   }
-  function convertBytesToBytes8(bytes inBytes) internal pure returns (bytes8 outBytes8) {
-    if (inBytes.length == 0) {
-      return 0x0;
-    }
 
-    assembly {
-      outBytes8 := mload(add(inBytes, 32))
+  function bytesToUint(bytes b) internal pure returns (uint256){
+    uint256 number;
+    for(uint i=0;i<b.length;i++){
+      number = number + uint(b[i])*(2**(8*(b.length-(i+1))));
     }
+    return number;
   }
+
   // get transactions
   function getTransactionOfTokenId(uint256 tokenId) external view returns(Transaction[] calldata) {
     return tokenIdTransactions[tokenId];
