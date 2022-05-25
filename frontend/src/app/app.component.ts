@@ -8,14 +8,18 @@ import {Router} from "@angular/router";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Weight Manager';
+  title = 'Amfi';
 
   constructor(private contractService: ContractService,
               private router: Router) {
+
+
   }
   async ngOnInit(): Promise<void> {
     await this.contractService.loadWeb3()
     await this.contractService.loadBlockChainData()
+
+    this.router.navigateByUrl('app/home').then(r => console.log('check profile'));
 
   }
 }

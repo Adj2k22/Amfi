@@ -1,8 +1,8 @@
 {
     "type": "cotton",
-    "amount":"",
+    "sustainability": "",
     "harvest":"",
     "fabric":"",
-    "company":[],
+    "companies":[],
     "extraInfo":""
 }
