@@ -178,7 +178,7 @@ contract ComposableTopDown is ERC721c, ERC998ERC721TopDown, ERC998ERC721TopDownE
   }
 
 
-  function _transferFrom(address _from, address _to, uint256 _tokenId) private {
+  function _transferFrom(address _from, address _to, uint256 _tokenId) internal {
     require(_from != address(0));
     require(tokenIdToTokenOwner[_tokenId] == _from);
     require(_to != address(0));
@@ -219,25 +219,7 @@ emit Transfer(_from, _to, _tokenId);
 
 }
 
-function transferFrom(address _from, address _to, uint256 _tokenId) external {
-_transferFrom(_from, _to, _tokenId);
-}
 
-function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
-_transferFrom(_from, _to, _tokenId);
-if (isContract(_to)) {
-bytes4 retval = ERC721TokenReceiverc(_to).onERC721Received(msg.sender, _from, _tokenId, "");
-require(retval == ERC721_RECEIVED_OLD);
-}
-}
-
-function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) external {
-_transferFrom(_from, _to, _tokenId);
-if (isContract(_to)) {
-bytes4 retval = ERC721TokenReceiverc(_to).onERC721Received(msg.sender, _from, _tokenId, _data);
-require(retval == ERC721_RECEIVED_OLD);
-}
-}
 
 ////////////////////////////////////////////////////////
 // ERC998ERC721 and ERC998ERC721Enumerable implementation

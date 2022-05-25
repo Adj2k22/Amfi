@@ -38,8 +38,7 @@ contract ClothingC is ComposableTopDown {
     if (tokenType == NftType.BRAND) {
       clothingTokens.push(tokenId);
     }
-    tokenIdTransactions[tokenId].push(Transaction(now, msg.sender, address(this), tokenType, TokenIdAction.Created));
-
+    tokenIdTransactions[tokenId].push(Transaction(block.timestamp, tx.origin, _to, tokenType, TokenIdAction.Created));
 
     return mintiedToken;
   }
@@ -52,8 +51,8 @@ contract ClothingC is ComposableTopDown {
 
     parentChildsLen[toParentTokenID]++;
     childToParent[_childTokenId] = toParentTokenID;
-    tokenIdTransactions[toParentTokenID].push(Transaction(now, msg.sender, address(this), parentTokenType, TokenIdAction.Composed));
-    tokenIdTransactions[_childTokenId].push(Transaction(now, msg.sender, address(this), childTokenType, TokenIdAction.Composed));
+    tokenIdTransactions[toParentTokenID].push(Transaction(block.timestamp, tx.origin, _to, parentTokenType, TokenIdAction.Composed));
+    tokenIdTransactions[_childTokenId].push(Transaction(block.timestamp, tx.origin, _to, childTokenType, TokenIdAction.Composed));
     safeTransferChild(_fromTokenId,_to,_childContract,_childTokenId,_data);
   }
 
@@ -185,5 +184,26 @@ contract ClothingC is ComposableTopDown {
       childs[i] = childTokenByIndex(tokenId,tokenIdContract,i);
     }
     return childs;
+  }
+
+
+  function transferFrom(address _from, address _to, uint256 _tokenId) external {
+    _transferFrom(_from, _to, _tokenId);
+  }
+
+  function safeTransferFrom(address _from, address _to, uint256 _tokenId) external {
+    _transferFrom(_from, _to, _tokenId);
+    if (isContract(_to)) {
+      bytes4 retval = ERC721TokenReceiverc(_to).onERC721Received(msg.sender, _from, _tokenId, "");
+      require(retval == ERC721_RECEIVED_OLD);
+    }
+  }
+
+  function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) external {
+    _transferFrom(_from, _to, _tokenId);
+    if (isContract(_to)) {
+      bytes4 retval = ERC721TokenReceiverc(_to).onERC721Received(msg.sender, _from, _tokenId, _data);
+      require(retval == ERC721_RECEIVED_OLD);
+    }
   }
 }
