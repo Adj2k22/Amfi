@@ -63,19 +63,37 @@ contract MaterialNFT is ERC721Enumerable {
     return(tokenIdArray,materialAmountArray);
   }
   function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721,ERC721) {
-    require(infoMaterialByToken[tokenId].length>0);
-    uint infoMaterialByTokenindex = infoMaterialByToken[tokenId].length -1;
     
-
+    // to transfer the tokenId should be exist. we check that here by checking if that specifiec material has an object Material Stored in the Array in the mapping infoMaterialByToken
+    require(infoMaterialByToken[tokenId].length>0);
+    // when this function get called from composable just ownership will change nothing no new inputs are recieved.
+    if (isContract(msg.sender)){
+      // transfer
+       super.safeTransferFrom(from, to,tokenId,_data);
+    }else{
+    // get the index of the most current Material instantie (the last element in the array)
+    uint infoMaterialByTokenindex = infoMaterialByToken[tokenId].length -1;
+    // break the data into tokenId and amount of the material should be spend
     (bytes memory tokenIdArray,bytes memory materialAmountArray) = extractMaterialAmountAndTokenId(_data);
+    // convert bytes material amount into uint
     uint256 materialAmountToSub = bytesToUint(materialAmountArray);
+    // substract the amount should be spend from the most current one
     uint newNftAmount = (infoMaterialByToken[tokenId][infoMaterialByTokenindex].amount - materialAmountToSub);
+    // the new amount should be higher or equal to zero
     require(newNftAmount >= 0);
-
+    // save the new material instantion by pushing it into the arraty 
     infoMaterialByToken[tokenId].push(Material(infoMaterialByToken[tokenId][0].materialType , newNftAmount));
+    // transfer
+     super.safeTransferFrom(from, to,tokenId,tokenIdArray);
+     }
+     // save the transaction
     tokenIdTransactions[tokenId].push(Transaction(block.timestamp, tx.origin, to, nftType, tokenIdAction.Moved));
+  }
 
-    super.safeTransferFrom(from, to,tokenId,tokenIdArray);
+  function isContract(address addr) public view returns (bool) {
+    uint size;
+    assembly {size := extcodesize(addr)}
+    return size > 0;
   }
 
   function getTransactionOfTokenId(uint256 tokenId) external view returns(Transaction[] memory) {
