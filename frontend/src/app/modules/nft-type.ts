@@ -1,0 +1,3 @@
+export enum NftType {
+  NOTEXIST,CLOTHING,MATERIAL,DESIGN
+}
