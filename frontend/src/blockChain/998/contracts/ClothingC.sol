@@ -43,7 +43,7 @@ contract ClothingC is ComposableTopDown {
     return mintiedToken;
   }
 
-  function safeTransferChildMain(address idGenerator, uint256 _fromTokenId, address _to, address _childContract, uint256 _childTokenId, bytes _data) external{
+  function safeTransferChildMain(address idGenerator, uint256 _fromTokenId, address _to, address _childContract, uint256 _childTokenId, bytes _data) public{
     uint256 toParentTokenID =  bytesToUint(_data);
     NftType parentTokenType = NftType(getNftTypeOfTokenId(idGenerator, toParentTokenID));
     NftType childTokenType = NftType(getNftTypeOfTokenId(idGenerator, _childTokenId));
