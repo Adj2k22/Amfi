@@ -63,11 +63,13 @@ contract MaterialNFT is ERC721Enumerable {
     return(tokenIdArray,materialAmountArray);
   }
   function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721,ERC721) {
-    uint infoMaterialByTokenLen = infoMaterialByToken[tokenId].length;
+    require(infoMaterialByToken[tokenId].length>0);
+    uint infoMaterialByTokenindex = infoMaterialByToken[tokenId].length -1;
+    
 
     (bytes memory tokenIdArray,bytes memory materialAmountArray) = extractMaterialAmountAndTokenId(_data);
     uint256 materialAmountToSub = bytesToUint(materialAmountArray);
-    uint newNftAmount = (infoMaterialByToken[tokenId][infoMaterialByTokenLen-1].amount - materialAmountToSub);
+    uint newNftAmount = (infoMaterialByToken[tokenId][infoMaterialByTokenindex].amount - materialAmountToSub);
     require(newNftAmount >= 0);
 
     infoMaterialByToken[tokenId].push(Material(infoMaterialByToken[tokenId][0].materialType , newNftAmount));
@@ -78,6 +80,10 @@ contract MaterialNFT is ERC721Enumerable {
 
   function getTransactionOfTokenId(uint256 tokenId) external view returns(Transaction[] memory) {
     return tokenIdTransactions[tokenId];
+  }
+
+    function getMaterialHistoryOfTokenId(uint256 tokenId) external view returns(Material[] memory) {
+    return infoMaterialByToken[tokenId];
   }
 
   function bytesToUint(bytes memory b) public view returns (uint256){
