@@ -5,7 +5,7 @@ import {MetaMaskInpageProvider} from '@metamask/providers';
 import detectEthereumProvider from '@metamask/detect-provider'
 //@ts-ignore
 import Web3 from 'web3';
-  //ABIS Json files of contracts
+//ABIS Json files of contracts
 //@ts-ignore
 import ClothingC from '/src/blockChain/src/comp/abis/ClothingC.json'
 //@ts-ignore
@@ -17,6 +17,8 @@ import MaterialNFT from '/src/blockChain/src/nfts/abis/MaterialNFT.json'
 
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {NftType} from "../modules/nft-type";
 
 @Injectable({
   providedIn: 'any'
@@ -26,10 +28,16 @@ export class ContractService {
   web3: any
   provider: any
   accounts: any[]
+
   contractClothingC: any
   contractIdGenerator: any
   contractDesignNFT: any
   contractMaterialNFT: any
+
+  contractClothingCAddress: any
+  contractIdGeneratorAddress: any
+  contractDesignNFTAddress: any
+  contractMaterialNFTAddress: any
 
   constructor(private router: Router, private httpClient: HttpClient) {
     this.accounts = []
@@ -37,7 +45,7 @@ export class ContractService {
     because the service functions to prepare the web3 get loaded in the app component.
     if you go suddenly to other components without loading those methods the app crashes
      */
-   // this.router.navigateByUrl('app/').then(r => console.log('check profile'));
+    this.router.navigateByUrl('app/').then(r => console.log('check profile'));
   }
 
   async loadWeb3() {
@@ -68,13 +76,18 @@ export class ContractService {
 
     if (networkDataClothingC
       && networkDataIdGenerator
-      &&networkDataDesignNFT
-      &&networkDataMaterialNFT) {
+      && networkDataDesignNFT
+      && networkDataMaterialNFT) {
       // take contract address to make instance of this specific contract
       const contractAddressClothingC = networkDataClothingC.address
       const contractAddressIdGenerator = networkDataIdGenerator.address
       const contractAddressDesignNFT = networkDataDesignNFT.address
       const contractAddressMaterialNFT = networkDataMaterialNFT.address
+
+      this.contractClothingCAddress = networkDataClothingC.address
+      this.contractIdGeneratorAddress = networkDataIdGenerator.address
+      this.contractDesignNFTAddress = networkDataDesignNFT.address
+      this.contractMaterialNFTAddress = networkDataMaterialNFT.address
 
       // take contract abi to call its methods
       const abiClothingC = ClothingC.abi
@@ -103,5 +116,97 @@ export class ContractService {
       throw "something is wrong with your contract abi"
     }
   }
+
+  async loadClothingDetails(tokenId: number) {
+    let childTokens = await this.contractClothingC
+      .methods
+      .getparentTokenIdOfchild(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+
+    if (childTokens.length > 0) {
+      let tokenIdType = await this.contractIdGenerator
+        .methods
+        .getNftType(tokenId)
+        .call({
+          from: this.accounts[0]
+        });
+      if (tokenIdType == NftType.DESIGN) {
+        return childTokens;
+      }
+    }
+    throw new Error(tokenId + "is not a clothing NFT")
+  }
+
+
+  fetchjsonURI(jsonUrl: string): Observable<{
+    "name": string,
+    "description": string,
+    "image": string
+  }> {
+    return this.httpClient.get<{
+      "name": string,
+      "description": string,
+      "image": string
+    }>(jsonUrl);
+  }
+
+  async makeTestNft() {
+    //1
+    await this.contractDesignNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", [], "").send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //2
+    await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55, "").send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //3
+    await this.contractClothingC.methods.mint(this.accounts[0], 1, this.contractIdGeneratorAddress).send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //4
+    await this.contractClothingC.methods.mint(this.accounts[0], 2, this.contractIdGeneratorAddress).send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //5
+    await this.contractDesignNFT.methods.safeTransferFrom(this.accounts[0], this.contractClothingCAddress, 1, '0x00000000000000000000000000000001').send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //6
+    await this.contractMaterialNFT.methods.safeTransferFrom(this.accounts[0], this.contractClothingCAddress, 2, '0x0000000000000000000000000000000200000000000000000000000000000008').send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    //7
+    await this.contractClothingC
+      .methods
+      .safeTransferChildMain(this.contractIdGeneratorAddress, 2, this.contractClothingCAddress, this.contractMaterialNFTAddress, 2, '0x00000000000000000000000000000001')
+      .send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+
+  }
+
 
 }
