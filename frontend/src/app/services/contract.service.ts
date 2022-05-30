@@ -17,7 +17,7 @@ import MaterialNFT from '/src/blockChain/src/nfts/abis/MaterialNFT.json'
 
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {NftType} from "../modules/nft-type";
 import {DesignModule} from "../modules/design/design.module";
 import {MaterialModule} from "../modules/material/material.module";
@@ -40,6 +40,8 @@ export class ContractService {
   contractIdGeneratorAddress: any
   contractDesignNFTAddress: any
   contractMaterialNFTAddress: any
+
+   materials: BehaviorSubject<Map<number, MaterialModule> > = new  BehaviorSubject( new Map<number, MaterialModule>());
 
   constructor(private router: Router, private httpClient: HttpClient) {
     this.accounts = []
@@ -122,7 +124,7 @@ export class ContractService {
   async loadClothingDetails(tokenId: number) {
     let childTokens = await this.contractClothingC
       .methods
-      .getChildTokenIdsOfParent(tokenId,this.contractIdGeneratorAddress)
+      .getChildTokenIdsOfParent(tokenId,this.contractMaterialNFTAddress)
       .call({
         from: this.accounts[0]
       });
@@ -175,6 +177,16 @@ export class ContractService {
       });
 
   }
+
+  async getTransactionOfMaterial(tokenId: number){
+
+  }
+
+  async getHistoryOfMaterial(tokenId: number){}
+
+  async getTransactionOfDesign(tokenId: number){}
+
+  async getDesign(tokenId: number){}
 
   fetchjsonURID(jsonUrl: string): Observable<DesignModule> {
     return this.httpClient.get<DesignModule>(jsonUrl);

@@ -10,7 +10,7 @@ import {DesignModule} from "../../modules/design/design.module";
   styleUrls: ['./material-info.component.css']
 })
 export class MaterialInfoComponent implements OnInit {
-  material: MaterialModule | undefined ;
+  material: MaterialModule | undefined;
   tokenId: number
   constructor(private route: ActivatedRoute,private contractService:ContractService) {
     this.tokenId = 0;
@@ -20,11 +20,15 @@ export class MaterialInfoComponent implements OnInit {
     this.route.params.subscribe(param => {
       this.tokenId = param['tokenId'];
     });
-    let uri = await this.contractService.getDesignTokenURI(this.tokenId)
+    this.contractService.materials.subscribe(value => {
+      this.material = value.get(this.tokenId);
+    })
+
+/*    let uri = await this.contractService.getMaterialTokenURI(this.tokenId)
     this.contractService.fetchjsonURIM(uri).subscribe(value => {
       this.material = new MaterialModule(value.name,value.description,value.type,value.sustainability
       ,value.harvest,value.companies,value.extraInfo)
-    })
+    })*/
 
   }
 

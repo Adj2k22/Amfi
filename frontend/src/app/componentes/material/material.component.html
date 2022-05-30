@@ -1,21 +1,14 @@
-<section class="about-mf">
-  <h3 >Transactions</h3>
+<main class="mt-wrap" >
+  <section class="grid-mt">
+    <h2>Materials</h2>
+    <p>The materials this brand uses are listed right here. See where the materials from your piece of clothing are from by clicking on a material.</p>
+    <div class="specs-mf"></div>
 
-  <table class="customTable">
-    <thead>
-    <tr>
-      <th>Materials</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let token of materialsTokenIds ">
-      <td>
-        <a [routerLink]= "['../../materialInfo/'+tokenId]">{{tokenId}}</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <img class="mfimg" src="styles/img/materials.png">
+  </section>
 
 
-
-</section>
+  <a *ngFor="let token of materialsTokenIds ;let i = index"  [routerLink]= "['../../materialInfo/'+token]" class="mt2">
+    <p class="Poly">{{materials[i].type}}</p>
+  </a>
+</main>
