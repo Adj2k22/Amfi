@@ -26,7 +26,6 @@ export class ClothingComponent implements OnInit {
     this.contractService.fetchjsonURID(uri).subscribe(value => {
       this.design = new DesignModule(value.name,value.description,value.image,value.brand,value.designers)
     })
-    console.log(this.design)
   }
 
 }

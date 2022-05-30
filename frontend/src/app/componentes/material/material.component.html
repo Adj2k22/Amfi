@@ -1,1 +1,21 @@
-<p>material works!</p>
+<section class="about-mf">
+  <h3 >Transactions</h3>
+
+  <table class="customTable">
+    <thead>
+    <tr>
+      <th>Materials</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let token of materialsTokenIds ">
+      <td>
+        <a [routerLink]= "['../../materialInfo/'+tokenId]">{{tokenId}}</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+
+
+</section>

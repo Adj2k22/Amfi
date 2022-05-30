@@ -122,7 +122,7 @@ export class ContractService {
   async loadClothingDetails(tokenId: number) {
     let childTokens = await this.contractClothingC
       .methods
-      .getparentTokenIdOfchild(tokenId)
+      .getChildTokenIdsOfParent(tokenId,this.contractIdGeneratorAddress)
       .call({
         from: this.accounts[0]
       });
@@ -195,7 +195,7 @@ export class ContractService {
       });
     //2
     await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55,
-      "").send({
+      "https://gateway.pinata.cloud/ipfs/QmaQzYf2CQVZJBEiYMY53A7xXLonJEAf5tnS9CJw5Sskuc").send({
       from: this.accounts[0]
     })
       .then((recipe: any) => {

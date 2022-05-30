@@ -4,9 +4,9 @@
     <!--foto of the clothing-->
     <img *ngIf="design"  src="{{design.image}}" class="patagonia">
     <!--info of the design-->
-    <a [routerLink]= "['app/design/'+tokenId]"><img src="../../../assets/img/brand.png" class="brandimg"></a>
+    <a [routerLink]= "'../../design/'+tokenId"><img src="../../../assets/img/brand.png" class="brandimg"></a>
     <!--info of the material-->
-    <a [routerLink]= "['app/material/'+tokenId]"><img src="../../../assets/img/material.png" class="materialimg"></a>
+    <a [routerLink]= "['../../material/'+tokenId]"><img src="../../../assets/img/material.png" class="materialimg"></a>
   </section>
 </main>
 

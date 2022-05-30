@@ -10,7 +10,9 @@ import { ClothingComponent } from './componentes/clothing/clothing.component';
 import { TransactionsComponent } from './componentes/transactions/transactions.component';
 import { DesignComponent } from './componentes/design/design.component';
 import { MaterialComponent } from './componentes/material/material.component';
-import { ClothingInfoComponent } from './componentes/clothing-info/clothing-info.component'
+import { ClothingInfoComponent } from './componentes/clothing-info/clothing-info.component';
+import { MaterialInfoComponent } from './componentes/material-info/material-info.component';
+import { DesignInfoComponent } from './componentes/design-info/design-info.component'
 
 const appRoutes: Routes = [
   {path: 'app/', pathMatch: "full", component: AppComponent},
@@ -19,9 +21,8 @@ const appRoutes: Routes = [
   {path: 'app/design/:tokenId', pathMatch: "full", component:DesignComponent, children:[
       {path:':tokenId', component: TransactionsComponent}
     ]},
-  {path: 'app/material/:tokenId', pathMatch: "full", component:MaterialComponent,children:[
-      {path:':tokenId',component: TransactionsComponent}
-    ]},
+  {path: 'app/material/:tokenId', pathMatch: "full", component:MaterialComponent},
+  {path: 'app/materialInfo/:tokenId', pathMatch: "full", component:MaterialInfoComponent},
   {path: '*', pathMatch: 'full', redirectTo: 'app/home'}
 ];
 
@@ -35,6 +36,8 @@ const appRoutes: Routes = [
     DesignComponent,
     MaterialComponent,
     ClothingInfoComponent,
+    MaterialInfoComponent,
+    DesignInfoComponent,
   ],
   imports: [
     BrowserModule,
