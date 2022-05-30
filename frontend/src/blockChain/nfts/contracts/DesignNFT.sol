@@ -70,6 +70,12 @@ contract DesignNFT is ERC721Enumerable {
     return nfts;
   }
 
+   function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public  override(IERC721,ERC721) {
+      super.safeTransferFrom(from, to,tokenId,_data);
+           // save the transaction
+    tokenIdTransactions[tokenId].push(Transaction(block.timestamp, tx.origin, to, nftType, tokenIdAction.Moved));
+   }
+
   function agreeTransect( uint256 tokenId) public {
 
     require(ownersExist[tokenId][msg.sender] == true, string(abi.encodePacked("Error: address", msg.sender, "is not a part of ownership for this token id:", tokenId)));

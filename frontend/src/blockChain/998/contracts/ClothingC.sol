@@ -177,14 +177,12 @@ contract ClothingC is ComposableTopDown {
     return childToParent[tokenId];
   }
   // get childeren of parent
-  function getChildTokenIdsOfParent(uint256 tokenId, address IdGenerator) external view returns(uint256[] calldata) {
+  function getChildTokenIdsOfParent(uint256 tokenId, address childContract) external view returns(uint256[] calldata) {
     // make array of length of childs
     uint256[] memory childs = new uint256[](parentChildsLen[tokenId]);
-    // get the tokenId parent contract address
-    address tokenIdContract = getContractTokenId(IdGenerator, tokenId);
     // search in the 998 (this) to the childs by looking in the map of parent its children array
     for (uint i = 0; i<childs.length;i++){
-      childs[i] = childTokenByIndex(tokenId,tokenIdContract,i);
+      childs[i] = childTokenByIndex(tokenId,childContract,i);
     }
     return childs;
   }
