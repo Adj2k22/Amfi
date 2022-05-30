@@ -1,4 +1,5 @@
 <main class="mt-wrap" table *ngIf="material && transactions.length>0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <section class="grid-mt">
     <h2>Materials</h2>
     <h4 class="ondertitel">{{material.type}}</h4>
@@ -40,10 +41,7 @@
         <td>{{material.extraInfo}}</td>
       </tr>
     </table>
-
-  </section>
-
-  <section class="py2">
+    <br><br><br><br><br><br>
     <h3 >Transactions</h3>
 
     <table class="Tablemt">
@@ -69,8 +67,8 @@
       </tr>
       </tbody>
     </table>
-
-
+    
   </section>
+
 
 </main>
