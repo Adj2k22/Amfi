@@ -11,14 +11,14 @@ import {TokenIdAction} from "../token-id-action";
   ]
 })
 export class TransactionModule {
-  public timeStamp: Date ;
+  public timeStamp: number ;
   public from: number;
   public to: number;
   public nftType: NftType;
   public tokenIdAction: TokenIdAction
 
   constructor() {
-    this.timeStamp = new Date();
+    this.timeStamp = 0;
     this.from = 0;
     this.to = 0;
     this.nftType = NftType.NOTEXIST;

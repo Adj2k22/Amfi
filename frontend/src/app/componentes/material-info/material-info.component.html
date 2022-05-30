@@ -1,33 +1,76 @@
-<div class="mt1">
-  <h3>Material properties</h3>
-  <table *ngIf="material" class="Tablemt">
-    <tr>
-      <th>name</th>
-      <td>{{material.name}}</td>
-    </tr>
-    <tr>
-      <th>description</th>
-      <td> {{material.description}} </td>
-    </tr>
-    <tr>
-      <th>type</th>
-      <td>{{material.type}}</td>
-    </tr>
-    <tr>
-      <th>sustainability</th>
-      <td>{{material.sustainability}}</td>
-    </tr>
-    <tr>
-      <th>harvest</th>
-      <td>{{material.harvest}}</td>
-    </tr>
-    <tr>
-      <th>companies</th>
-      <td>{{material.companies}}</td>
-    </tr>
-    <tr>
-      <th>extraInfo</th>
-      <td>{{material.extraInfo}}</td>
-    </tr>
-  </table>
-</div>
+<main class="mt-wrap" table *ngIf="material && transactions.length>0">
+  <section class="grid-mt">
+    <h2>Materials</h2>
+    <h4 class="ondertitel">{{material.type}}</h4>
+    <p>Transactions and extra information about this material that is used in your piece of clothing.</p>
+    <div class="specs-mf"></div>
+
+    <img class="mfimg-poly" src="assets/img/Poly.png">
+  </section>
+
+  <section class="py1">
+    <h3 >Additional information</h3>
+    <table  class="Tablemt margin">
+      <tr>
+        <th>name</th>
+        <td>{{material.name}}</td>
+      </tr>
+      <tr>
+        <th>description</th>
+        <td> {{material.description}} </td>
+      </tr>
+      <tr>
+        <th>type</th>
+        <td>{{material.type}}</td>
+      </tr>
+      <tr>
+        <th>sustainability</th>
+        <td>{{material.sustainability}}</td>
+      </tr>
+      <tr>
+        <th>harvest</th>
+        <td>{{material.harvest}}</td>
+      </tr>
+      <tr>
+        <th>companies</th>
+        <td>{{material.companies}}</td>
+      </tr>
+      <tr>
+        <th>extraInfo</th>
+        <td>{{material.extraInfo}}</td>
+      </tr>
+    </table>
+
+  </section>
+
+  <section class="py2">
+    <h3 >Transactions</h3>
+
+    <table class="Tablemt">
+      <thead>
+      <tr>
+        <th>TimeStamp</th>
+        <th>From</th>
+        <th>To</th>
+        <th>NftType</th>
+        <th>TokenIdAction</th>
+        <th>Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let transaction of transactions ;let i = index">
+        <td>{{unixTimeStampToDate(transaction.timeStamp)}}</td>
+        <td>{{transaction.from}}</td>
+        <td>{{transaction.to}}</td>
+        <td>{{transaction.nftType}}</td>
+        <td>{{transaction.tokenIdAction}}</td>
+        <td *ngIf="i < materialHistory.length">{{materialHistory[i].amount}}</td>
+        <td *ngIf="i >= materialHistory.length">{{materialHistory[materialHistory.length-1].amount}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+
+  </section>
+
+</main>

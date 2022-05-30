@@ -26,7 +26,6 @@ materialsMapping:Map<number, MaterialModule> = new Map<number, MaterialModule>()
     });
     this.materialsTokenIds = await this.contractService.loadClothingDetails(this.tokenId)
     this.materials = await this.loadData()
-    console.log(this.materials)
   }
 
   async loadData():Promise<MaterialModule[]>{

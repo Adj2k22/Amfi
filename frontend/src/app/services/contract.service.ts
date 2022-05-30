@@ -21,6 +21,7 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {NftType} from "../modules/nft-type";
 import {DesignModule} from "../modules/design/design.module";
 import {MaterialModule} from "../modules/material/material.module";
+import {TransactionModule} from "../modules/transaction/transaction.module";
 
 @Injectable({
   providedIn: 'any'
@@ -178,15 +179,42 @@ export class ContractService {
 
   }
 
-  async getTransactionOfMaterial(tokenId: number){
+  async getTransactionOfMaterial(tokenId: number) : Promise<TransactionModule[]>{
+    return await this.contractMaterialNFT
+      .methods
+      .getTransactionOfTokenId(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+  }
+
+  async getHistoryOfMaterial(tokenId: number) : Promise<{materialType:string, amount:number }[]>{
+    return await this.contractMaterialNFT
+      .methods
+      .getMaterialHistoryOfTokenId(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
 
   }
 
-  async getHistoryOfMaterial(tokenId: number){}
+  async getTransactionOfDesign(tokenId: number) : Promise<TransactionModule[]>{
+    return await this.contractDesignNFT
+      .methods
+      .getTransactionOfTokenId(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+  }
 
-  async getTransactionOfDesign(tokenId: number){}
-
-  async getDesign(tokenId: number){}
+  async getDesign(tokenId: number) : Promise<DesignModule>{
+    return await this.contractDesignNFT
+      .methods
+      .getDesign(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+  }
 
   fetchjsonURID(jsonUrl: string): Observable<DesignModule> {
     return this.httpClient.get<DesignModule>(jsonUrl);
