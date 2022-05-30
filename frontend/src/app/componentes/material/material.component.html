@@ -1,4 +1,5 @@
-<main class="mt-wrap" *ngIf="materials.length>0&&materialsTokenIds.length>0">
+<main class="mt-wrap" *ngIf="materials.length>0&&materialsTokenIds.length>0&&
+materials.length==materialsTokenIds.length&&materialsMapping">
   <section class="grid-mt">
     <h2>Materials</h2>
     <p>The materials this brand uses are listed right here. See where the materials from your piece of clothing are from by clicking on a material.</p>
@@ -8,7 +9,30 @@
   </section>
 
 
-  <a *ngFor="let token of materialsTokenIds ;let i = index"  [routerLink]= "['../../materialInfo/'+token]" class="mt2">
+  <a *ngFor="let token of materialsTokenIds ;let i = index"  [routerLink]= "['../../materialInfo/'+token]" >
     <p class="Poly">{{materials[i].type}}</p>
   </a>
+
+
+
+  <section class="about-mf">
+    <h3 >Transactions</h3>
+
+    <table class="customTable">
+      <thead>
+      <tr>
+        <th>material</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let token of materialsTokenIds ;let i = index"  >
+        <td><a [routerLink]= "['../../materialInfo/'+token]">{{materials[i].type}}</a></td>
+      </tr>
+      </tbody>
+    </table>
+
+
+
+  </section>
+
 </main>

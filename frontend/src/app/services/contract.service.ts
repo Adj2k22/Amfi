@@ -265,6 +265,14 @@ export class ContractService {
       .then((recipe: any) => {
         console.log(recipe);
       });
+
+    await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55,
+      "https://gateway.pinata.cloud/ipfs/QmVf9U2RghCA3AB2EVHp2maZrYD11d7EqWbKXxU5ZjzNHo").send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
     //3
     await this.contractClothingC.methods.mint(this.accounts[0], 1, this.contractIdGeneratorAddress).send({
       from: this.accounts[0]
@@ -274,6 +282,12 @@ export class ContractService {
       });
     //4
     await this.contractClothingC.methods.mint(this.accounts[0], 2, this.contractIdGeneratorAddress).send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    await this.contractClothingC.methods.mint(this.accounts[0], 3, this.contractIdGeneratorAddress).send({
       from: this.accounts[0]
     })
       .then((recipe: any) => {
@@ -293,6 +307,12 @@ export class ContractService {
       .then((recipe: any) => {
         console.log(recipe);
       });
+    await this.contractMaterialNFT.methods.safeTransferFrom(this.accounts[0], this.contractClothingCAddress, 3, '0x0000000000000000000000000000000300000000000000000000000000000009').send({
+      from: this.accounts[0]
+    })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
     //7
     await this.contractClothingC
       .methods
@@ -300,6 +320,15 @@ export class ContractService {
       .send({
       from: this.accounts[0]
     })
+      .then((recipe: any) => {
+        console.log(recipe);
+      });
+    await this.contractClothingC
+      .methods
+      .safeTransferChildMain(this.contractIdGeneratorAddress, 3, this.contractClothingCAddress, this.contractMaterialNFTAddress, 3, '0x00000000000000000000000000000001')
+      .send({
+        from: this.accounts[0]
+      })
       .then((recipe: any) => {
         console.log(recipe);
       });
