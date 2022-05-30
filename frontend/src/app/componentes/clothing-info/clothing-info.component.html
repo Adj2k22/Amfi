@@ -1,1 +1,31 @@
-<p>clothing-info works!</p>
+<main class="mf-wrap" *ngIf="transactions.length>0">
+
+  <section class="about-mf">
+    <h3 >Transactions</h3>
+
+    <table class="customTable">
+      <thead>
+      <tr>
+        <th>TimeStamp</th>
+        <th>From</th>
+        <th>To</th>
+        <th>NftType</th>
+        <th>TokenIdAction</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let transaction of transactions ;let i = index">
+        <td>{{unixTimeStampToDate(transaction.timeStamp)}}</td>
+        <td>{{transaction.from}}</td>
+        <td>{{transaction.to}}</td>
+        <td>{{transaction.nftType}}</td>
+        <td>{{transaction.tokenIdAction}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+
+
+  </section>
+
+</main>

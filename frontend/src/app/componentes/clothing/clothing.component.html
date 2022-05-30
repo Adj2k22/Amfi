@@ -1,8 +1,8 @@
-<main id="main" *ngIf="tokenId>0;else wait">
+<main id="main" *ngIf="design&&tokenId>0;else wait">
   <section  class="home" *ngIf="isClothing;else notClothing">
 
     <!--foto of the clothing-->
-    <img *ngIf="design"  src="{{design.image}}" class="patagonia">
+    <a [routerLink]= "'../../clothingInfo/'+tokenId"> <img  src="{{design.image}}" class="patagonia"> </a>
     <!--info of the design-->
     <a [routerLink]= "'../../design/'+tokenId"><img src="../../../assets/img/brand.png" class="brandimg"></a>
     <!--info of the material-->

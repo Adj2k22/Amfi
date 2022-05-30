@@ -208,6 +208,15 @@ export class ContractService {
       });
   }
 
+  async getTransactionOfClothing(tokenId: number) : Promise<TransactionModule[]>{
+    return await this.contractClothingC
+      .methods
+      .getTransactionOfTokenId(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+  }
+
   async getDesign(tokenId: number) : Promise< {'designType':string,'designers':string[]}>{
     return await this.contractDesignNFT
       .methods
@@ -236,7 +245,7 @@ export class ContractService {
       });
     //2
     await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55,
-      "https://gateway.pinata.cloud/ipfs/QmaQzYf2CQVZJBEiYMY53A7xXLonJEAf5tnS9CJw5Sskuc").send({
+      "https://gateway.pinata.cloud/ipfs/QmWxPnsQqT5zSsboY2afez94BUHEPT17D39KEG21MBbKCJ ").send({
       from: this.accounts[0]
     })
       .then((recipe: any) => {
