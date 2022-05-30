@@ -1,1 +1,53 @@
-<p>design works!</p>
+
+<main class="mf-wrap" *ngIf="design && designb">
+  <section class="flex1-mf">
+    <h2>Design Proces</h2>
+    <p>The first steps regarding this product. Designers, brands involved, etc.</p>
+
+    <div class="specs-mf"></div>
+
+    <img class="mfimg" src="styles/img/pat_logo.jpeg">
+  </section>
+
+  <div class="mf">
+    <p class="ondertiet">{{design.name}}</p>
+    <h3>{{design.brand}}</h3>
+    <div class="factoryinfo">
+    </div>
+  </div>
+
+  <div class="map-mf">
+    <p>{{designb.designers}}<br>
+     {{design.description}} <br>
+  </div>
+
+  <section class="about-mf">
+    <h3 >Transactions</h3>
+
+    <table class="customTable">
+      <thead>
+      <tr>
+        <th>TimeStamp</th>
+        <th>From</th>
+        <th>To</th>
+        <th>NftType</th>
+        <th>TokenIdAction</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let transaction of transactions ;let i = index">
+        <td>{{unixTimeStampToDate(transaction.timeStamp)}}</td>
+        <td>{{transaction.from}}</td>
+        <td>{{transaction.to}}</td>
+        <td>{{transaction.nftType}}</td>
+        <td>{{transaction.tokenIdAction}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+
+
+  </section>
+
+</main>
+

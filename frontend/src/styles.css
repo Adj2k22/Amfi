@@ -157,7 +157,7 @@ nav {
 .brandimg{
   width: 30%;
   position: absolute;
-  left: 869px;
+  left: 992px;
   top: 4px;
 }
 
@@ -180,7 +180,7 @@ nav {
 .materialimg{
   width: 25%;
   position: absolute;
-  left: 350px;
+  left: 400px;
   top: 140px;
 }
 
@@ -463,7 +463,7 @@ h3 {
   margin-top: 100px;
   margin-right: 25px;
   height: 60vh;
-  margin-bottom: 0;
+  margin-bottom: 40px;
 
 }
 
@@ -540,13 +540,6 @@ table.customTable thead {
 
 }
 
-.dik {
-  font-family: poppins, sans-serif;
-  font-weight: 700;
-  font-style: normal;
-
-}
-
 
 .margin {
   margin-bottom: -80px;
@@ -568,20 +561,3 @@ table.customTable thead {
   font-size: 180px;
   margin: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

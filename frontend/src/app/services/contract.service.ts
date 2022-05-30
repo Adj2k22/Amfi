@@ -43,6 +43,7 @@ export class ContractService {
   contractMaterialNFTAddress: any
 
    materials: BehaviorSubject<Map<number, MaterialModule> > = new  BehaviorSubject( new Map<number, MaterialModule>());
+   design: BehaviorSubject<DesignModule> = new  BehaviorSubject(new DesignModule('','','','',[]));
 
   constructor(private router: Router, private httpClient: HttpClient) {
     this.accounts = []
@@ -207,7 +208,7 @@ export class ContractService {
       });
   }
 
-  async getDesign(tokenId: number) : Promise<DesignModule>{
+  async getDesign(tokenId: number) : Promise< {'designType':string,'designers':string[]}>{
     return await this.contractDesignNFT
       .methods
       .getDesign(tokenId)

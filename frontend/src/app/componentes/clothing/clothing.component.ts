@@ -25,6 +25,7 @@ export class ClothingComponent implements OnInit {
     let uri = await this.contractService.getDesignTokenURI(this.tokenId)
     this.contractService.fetchjsonURID(uri).subscribe(value => {
       this.design = new DesignModule(value.name,value.description,value.image,value.brand,value.designers)
+      this.contractService.design.next(this.design)
     })
   }
 
