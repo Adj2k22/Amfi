@@ -73,6 +73,9 @@ export class ContractService {
   }
 
   async loadBlockChainData() {
+    try {
+
+
     // check if contract is deyoled to the network and has network data to grape it and work on its methods
     const networkId = await this.provider.networkVersion;
     const networkDataClothingC = await ClothingC.networks[networkId]
@@ -120,10 +123,15 @@ export class ContractService {
       this.loader = true
     } else {
       throw "something is wrong with your contract abi"
+    }}catch (e){
+      console.error("Contract config is not correct")
     }
   }
 
   async loadClothingDetails(tokenId: number) {
+    try {
+
+
     let childTokens = await this.contractClothingC
       .methods
       .getChildTokenIdsOfParent(tokenId,this.contractMaterialNFTAddress)
@@ -143,6 +151,9 @@ export class ContractService {
       }
     }
     throw new Error(tokenId + "is not a clothing NFT")
+    }catch (e){
+      console.error(e)
+    }
   }
 
   async isClothing(tokenId: number) : Promise<boolean> {
@@ -162,12 +173,15 @@ export class ContractService {
   }
 
   async getDesignTokenURI(tokenId: number) : Promise<string> {
+    try {
     return await this.contractDesignNFT
       .methods
       .tokenURI(tokenId)
       .call({
         from: this.accounts[0]
-      });
+      });}catch (e){
+      throw new Error("Your TokenId " + tokenId + " does not exist")
+    }
   }
 
   async getMaterialTokenURI(tokenId: number) : Promise<string> {

@@ -11,6 +11,7 @@ import { DesignComponent } from './componentes/design/design.component';
 import { MaterialComponent } from './componentes/material/material.component';
 import { ClothingInfoComponent } from './componentes/clothing-info/clothing-info.component';
 import { MaterialInfoComponent } from './componentes/material-info/material-info.component';
+import { ErrorPageComponent } from './componentes/error-page/error-page.component';
 
 const appRoutes: Routes = [
   {path: 'app/', pathMatch: "full", component: AppComponent},
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
   {path: 'app/design/:tokenId', pathMatch: "full", component:DesignComponent},
   {path: 'app/material/:tokenId', pathMatch: "full", component:MaterialComponent},
   {path: 'app/materialInfo/:tokenId', pathMatch: "full", component:MaterialInfoComponent},
+  {path: 'app/error', pathMatch: "full", component: ErrorPageComponent},
   {path: '*', pathMatch: 'full', redirectTo: 'app/home'}
 ];
 
@@ -33,6 +35,7 @@ const appRoutes: Routes = [
     MaterialComponent,
     ClothingInfoComponent,
     MaterialInfoComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
