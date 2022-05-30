@@ -1,12 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
+export class MaterialModule {
+  name: string
+  description: string
+  type: string
+  sustainability: boolean
+  harvest:string
+  companies:string[]
+  extraInfo:string
 
 
-
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
-})
-export class MaterialModule { }
+  constructor(name: string, description: string, type: string, sustainability: boolean, harvest: string, companies: string[], extraInfo: string) {
+    this.name = name;
+    this.description = description;
+    this.type = type;
+    this.sustainability = sustainability;
+    this.harvest = harvest;
+    this.companies = companies;
+    this.extraInfo = extraInfo;
+  }
+}

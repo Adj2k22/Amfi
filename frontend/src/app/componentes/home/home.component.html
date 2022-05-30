@@ -1,12 +1,14 @@
 <main id="main">
-  <button (click)="initTestNFt()" type="button">Click Me!</button>
-  <img src="/assets/img/roadmap.png" class="roadmap">
+
+  <img src="../../../assets/img/ok.gif" class="roadmap">
 
   <section class="journey">
+    <div class="white">
 
-    <h1>THE JOURNEY OF YOUR GARMENT</h1>
+      <h2>THE JOURNEY OF YOUR GARMENT</h2>
 
-    <p>Curious about where your garment has been? Join us on a journey, from material to wardrobe. We follow the entire production chain and we are happy to take you here. By entering the code of the garment below, you will discover the journey that your piece of clothing has taken.</p>
+      <p>Curious about where your garment has been? Join us on a journey, from material to wardrobe. We follow the entire production chain and we are happy to take you here. By entering the code of the garment below, you will discover the journey that your piece of clothing has taken.</p>
+    </div>
 
     <div class="journey-input">
 
@@ -14,7 +16,7 @@
       <div class="tooltip"><img class="infoimg" src="/assets/img/info.png">
         <span class="tooltiptext"> On the tag of your garment you can find a black and white barcode. This code contains 8 to 13 numbers. Type these numbers into the text bar. </span>
       </div>
-        <input type="text" [(ngModel)]="tokenId" id="input" placeholder="5016599008681">
+      <input type="text" [(ngModel)]="tokenId" id="input" placeholder="5016599008681">
     </div>
 
     <p class="style">Click down the button below and find out about the journey of your garment!</p>
@@ -23,4 +25,4 @@
 
   </section>
 </main>
-
+<button (click)="initTestNFt()" type="button">Click Me!</button>

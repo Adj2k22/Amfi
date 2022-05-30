@@ -19,6 +19,8 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NftType} from "../modules/nft-type";
+import {DesignModule} from "../modules/design/design.module";
+import {MaterialModule} from "../modules/material/material.module";
 
 @Injectable({
   providedIn: 'any'
@@ -139,29 +141,61 @@ export class ContractService {
     throw new Error(tokenId + "is not a clothing NFT")
   }
 
+  async isClothing(tokenId: number) : Promise<boolean> {
+    try {
+      let address = await this.contractDesignNFT
+        .methods
+        .ownerOf(tokenId)
+        .call({
+          from: this.accounts[0]
+        });
+      return address == this.contractClothingCAddress;
+    }catch (e) {
+      console.error("tokenId: "+ tokenId + " is not Design or Clothing nether")
+      return false;
+    }
 
-  fetchjsonURI(jsonUrl: string): Observable<{
-    "name": string,
-    "description": string,
-    "image": string
-  }> {
-    return this.httpClient.get<{
-      "name": string,
-      "description": string,
-      "image": string
-    }>(jsonUrl);
+  }
+
+  async getDesignTokenURI(tokenId: number) : Promise<string> {
+    return await this.contractDesignNFT
+      .methods
+      .tokenURI(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+  }
+
+  async getMaterialTokenURI(tokenId: number) : Promise<string> {
+    return await this.contractMaterialNFT
+      .methods
+      .tokenURI(tokenId)
+      .call({
+        from: this.accounts[0]
+      });
+
+  }
+
+  fetchjsonURID(jsonUrl: string): Observable<DesignModule> {
+    return this.httpClient.get<DesignModule>(jsonUrl);
+  }
+
+  fetchjsonURIM(jsonUrl: string): Observable<MaterialModule> {
+    return this.httpClient.get<MaterialModule>(jsonUrl);
   }
 
   async makeTestNft() {
     //1
-    await this.contractDesignNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", [], "").send({
+    await this.contractDesignNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", [],
+      "https://gateway.pinata.cloud/ipfs/QmcESLxaMjhSFbg5Vq8pJ4kpsSDdfLBnkCnFrz63PMJ524").send({
       from: this.accounts[0]
     })
       .then((recipe: any) => {
         console.log(recipe);
       });
     //2
-    await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55, "").send({
+    await this.contractMaterialNFT.methods.makeNFT(this.accounts[0], this.contractIdGeneratorAddress, "", 55,
+      "").send({
       from: this.accounts[0]
     })
       .then((recipe: any) => {
@@ -207,6 +241,4 @@ export class ContractService {
       });
 
   }
-
-
 }

@@ -1,15 +1,19 @@
-<main id="main">
-  <section class="home">
-    <img src="../../../assets/img/pata.vest.jpeg" class="patagonia">
-    <a href="brand.html"><img src="../../../assets/img/brand.png" class="brandimg"></a>
-    <a href="manufacturing.html"><img src="../../../assets/img/manufacturing.png" class="manufacturingimg"></a>
-    <a href="materials.html"><img src="../../../assets/img/material.png" class="materialimg"></a>
+<main id="main" *ngIf="tokenId>0;else wait">
+  <section  class="home" *ngIf="isClothing;else notClothing">
+
+    <!--foto of the clothing-->
+    <img *ngIf="design"  src="{{design.image}}" class="patagonia">
+    <!--info of the design-->
+    <a [routerLink]= "['app/design/'+tokenId]"><img src="../../../assets/img/brand.png" class="brandimg"></a>
+    <!--info of the material-->
+    <a [routerLink]= "['app/material/'+tokenId]"><img src="../../../assets/img/material.png" class="materialimg"></a>
   </section>
 </main>
 
-
-<footer>
-  <a class="about">About This Project</a>
-</footer>
-
+<ng-template #wait>
+  wait.......
+</ng-template>
+<ng-template #notClothing>
+  your nft is not clothing
+</ng-template>
 <script src="scripts/script.js"></script>
